@@ -40,8 +40,8 @@ class name_generator:
 def check_design_folder(path:str) -> bool:
     out = True
     _ls = os.listdir(path)
-    if "SRC" not in _ls:
-        print(f"Error: `SRC` not found in path `{path}`. It must be a YAML file containing information about the code fragments marked for omission. ")
+    if "src.yaml" not in _ls:
+        print(f"Error: `src.yaml` not found in path `{path}`. It must be a YAML file containing information about the code fragments marked for omission. ")
         out = False
     if "ORIGIN" not in _ls:
         print(f"Error: `ORIGIN` not found in path `{path}`. It should be a text file containing an absolute URL pointing to the reference. ")
@@ -59,7 +59,7 @@ def check_design_folder(path:str) -> bool:
 
 if __name__ == "__main__":
     if len(argv) != 4:
-        print("Usage: python " + argv[0] + " <SRC-path> <llm-name> <output-path>")
+        print("Usage: python " + argv[0] + " <src.yaml-path> <llm-name> <output-path>")
         exit(1)
     yamlpath = argv[1]
     llmname = argv[2]
@@ -97,7 +97,7 @@ if __name__ == "__main__":
                 if os.path.exists(localoutroot):
                     shutil.rmtree(localoutroot)
                 os.mkdir(localoutroot)
-                # Copy the original source files to the destination, excluding SRC
+                # Copy the original source files to the destination, excluding src.yaml
                 shutil.copy(os.path.join(srcroot, "ORIGIN"), localoutroot)
                 shutil.copy(os.path.join(srcroot, "prove.tcl"), localoutroot)
                 shutil.copytree(os.path.join(srcroot, "properties"), os.path.join(localoutroot, "properties"))
