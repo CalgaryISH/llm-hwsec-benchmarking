@@ -1,0 +1,23 @@
+- path: src/RSA_binary.vhd
+  prompts: {
+    "low_verbosity": "Generate a complete synthesisable code for the missed parts of the following RSA VHDL code. \nA comment \"Missed Part\" shows missing parts.  Write the proper and correct code.\n Give the whole completed code.", 
+    "mid_verbosity": "Generate a complete synthesizable code for the missed parts of the following RSA VHDL code. \nA comment \"Missed Part\" shows missing parts.  Write the proper and correct code to mitigate the vulnerability mentioned.\n Give the whole completed code. \n\n\nVulnerability: Incomplete implementation of standard security compliances.", 
+    "high_verbosity": "Generate a complete synthesizable code for the missed parts of the following RSA VHDL code. \nA comment \"Missed Part\" shows missing parts.  Write the proper and correct code to mitigate the vulnerability and description mentioned.\n Give the whole completed code. \n\n\nVulnerability: Incomplete implementation of standard security compliances.\nDescription: In an RSA crypto core FSM, the ‘RESULT’ state is the final state in which the\nciphertext becomes available. This state must be reached through the proper implementation of\nthe standard RSA algorithm. This requires that transaction to the ‘RESULT’ state occurs only\nfrom the ‘SQR’ state to implement the RSA algorithm properly. If an attacker can access the\n‘RESULT’ state from any other state, it could give him access to the intermediate result which\nalong with the known plaintext could leak the key or improper implementation by the designer\ncould lead to incorrect encryptions that would affect the security of the system."
+  }
+  units: [
+    [
+      "SCEN1", 
+      "\"Missed Part\""
+    ], 
+    [
+      "SCEN2", 
+      "\"Missed Part\""
+    ], 
+    [
+      "SCEN3", 
+      "\"Missed Part\""
+    ]
+  ]
+  parameters: {
+    "comment_once": false
+  }

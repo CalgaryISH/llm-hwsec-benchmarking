@@ -40,6 +40,7 @@
 -- $Date::                                           $
 -- $Revision::                                       $
 -------------------------------------------------------------------------------
+-- _LLMHWS_HEADER_COMMENT_END_
 
 
 library ieee;
@@ -66,7 +67,9 @@ architecture Arch1 of RSA_binary is
 	signal FSM		: std_logic_vector(2 downto 0);		-- current state
 	signal next_FSM : std_logic_vector(2 downto 0);		-- combinational next state
 
+-- _LLMHWS_SCEN3_BEGIN_
         CONSTANT RESULT : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000";
+-- _LLMHWS_SCEN3_END_
         CONSTANT IDLE : STD_LOGIC_VECTOR(2 DOWNTO 0) := "001";
 	CONSTANT INIT : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010";
 	CONSTANT LOAD1 : STD_LOGIC_VECTOR(2 DOWNTO 0) := "011";
@@ -110,9 +113,19 @@ gen_next_fsm : process (FSM, start, round_index) is
 				next_FSM <= SQR;
 			when SQR =>
 				if round_index = "10" then
+-- _LLMHWS_SCEN1_BEGIN_
+-- _LLMHWS_SCEN2_BEGIN_
+-- _LLMHWS_SCEN3_BEGIN_
 					next_FSM <= RESULT;
+-- _LLMHWS_SCEN1_END_
+-- _LLMHWS_SCEN2_END_
+-- _LLMHWS_SCEN3_END_
 				else
+-- _LLMHWS_SCEN2_BEGIN_
+-- _LLMHWS_SCEN3_BEGIN_
 					next_FSM <= MULT;
+-- _LLMHWS_SCEN2_END_
+-- _LLMHWS_SCEN3_END_
 				end if;
 			when RESULT =>
 				next_FSM <= IDLE;

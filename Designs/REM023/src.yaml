@@ -30,3 +30,6 @@
       "Write the proper code for handling key_ready = '0'. Do not change anything else. "
     ]
   ]
+  parameters: {
+    "comment_once": true
+  }

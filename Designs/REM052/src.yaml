@@ -34,3 +34,6 @@
       "Write the correct logic here. Do not change anything else. "
     ]
   ]
+  parameters: {
+    "comment_once": true
+  }

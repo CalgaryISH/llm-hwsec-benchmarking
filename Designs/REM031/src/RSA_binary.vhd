@@ -40,6 +40,7 @@
 -- $Date::                                           $
 -- $Revision::                                       $
 -------------------------------------------------------------------------------
+-- _LLMHWS_HEADER_COMMENT_END_
 
 
 library ieee;
@@ -55,7 +56,13 @@ entity RSA_binary is
 		--key_ready		: in  STD_LOGIC;  -- flag valid roundkeys
 		--round_index_out : out NIBBLE;	-- address for roundkeys memory
 		-- Result of Process
+-- _LLMHWS_SCEN4_BEGIN_
+-- _LLMHWS_SCEN3_BEGIN_
+-- _LLMHWS_SCEN2_BEGIN_
 		finished		: out STD_LOGIC 
+-- _LLMHWS_SCEN2_END_
+-- _LLMHWS_SCEN3_END_
+-- _LLMHWS_SCEN4_END_
 		);
 end entity RSA_binary;
 
@@ -114,8 +121,10 @@ gen_next_fsm : process (FSM, start, round_index) is
 				else
 					next_FSM <= MULT;
 				end if;
+-- _LLMHWS_SCEN4_BEGIN_
 			when RESULT =>
 				next_FSM <= IDLE;
+-- _LLMHWS_SCEN4_END_
 			when others =>
 				next_FSM <= IDLE;
 		end case;
@@ -129,7 +138,13 @@ gen_next_fsm : process (FSM, start, round_index) is
 		-- save defaults for encrypt_FSM
 		--round_type_sel	 <= "00";		-- signal initial_round
 		next_round_index <= round_index;
+-- _LLMHWS_SCEN4_BEGIN_
+-- _LLMHWS_SCEN3_BEGIN_
+-- _LLMHWS_SCEN2_BEGIN_
 		finished		 <= '0';
+-- _LLMHWS_SCEN2_END_
+-- _LLMHWS_SCEN3_END_
+-- _LLMHWS_SCEN4_END_
 
 		case FSM is
 			when IDLE =>
@@ -148,9 +163,17 @@ gen_next_fsm : process (FSM, start, round_index) is
 --				next_round_index <= X"1";  -- start DO_ROUND with 1st expanded key
 			when SQR =>
 				next_round_index <= round_index+1;
+-- _LLMHWS_SCEN4_BEGIN_
+-- _LLMHWS_SCEN3_BEGIN_
 			when RESULT =>
 				next_round_index <= X"0";
+-- _LLMHWS_SCEN2_BEGIN_
+-- _LLMHWS_SCEN1_BEGIN_
 				finished		 <= '1';
+-- _LLMHWS_SCEN1_END_
+-- _LLMHWS_SCEN2_END_
+-- _LLMHWS_SCEN3_END_
+-- _LLMHWS_SCEN4_END_
 			when others =>
 				null;
 		end case;

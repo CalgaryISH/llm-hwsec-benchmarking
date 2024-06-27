@@ -1,0 +1,27 @@
+- path: src/RSA_binary.vhd
+  prompts: {
+    "low_verbosity": "Generate a complete synthesizable code for the missed parts of the following AES VHDL code. \nMissed parts have been shown by a comment \"Missed Part\". ", 
+    "mid_verbosity": "Generate a complete synthesizable code for the missed parts of the following AES VHDL code. \nA comment \"Missed Part\" shows missing parts. Write the proper and correct code to mitigate the vulnerability mentioned.\n Give the whole completed code. \n\nVulnerability: Observability of RSA key/intermediate results from the output ports of RSA.", 
+    "high_verbosity": "Generate a complete synthesizable code for the missed parts of the following AES VHDL code. \nA comment \"Missed Part\" shows missing parts. Write the proper and correct code to mitigate the Vulnerability and Description mentioned below.\n Give the whole completed code. \n\n\nVulnerability: Observability of RSA key/intermediate results from the output ports of RSA.\nDescription: In an RSA crypto core, a ‘finished/ready’ signal is asserted after the encryption is\ncompleted, and the signal informs the user the ciphertext is available in the output register. The\nassertion of the ‘finished/ready’ signal before the ‘RESULT’ state of the RSA FSM can lead to\nconfidentiality violations which could leak the key. By asserting the signal before ‘RESULT’ state,\nan attacker can access the output register, essentially having the encryption rounds’\nintermediate results. This access to the intermediate results, along with known plaintext, can\ngive the attacker the chance to perform a side-channel analysis and extract the key."
+  }
+  units: [
+    [
+      "SCEN1", 
+      "\"Missed Part\""
+    ], 
+    [
+      "SCEN2", 
+      "\"Missed Part\""
+    ], 
+    [
+      "SCEN3", 
+      "\"Missed Part\""
+    ], 
+    [
+      "SCEN4", 
+      "\"Missed Part\""
+    ]
+  ]
+  parameters: {
+    "comment_once": false
+  }

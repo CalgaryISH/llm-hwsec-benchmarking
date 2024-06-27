@@ -18,3 +18,6 @@
       "Write the code for generating next_round_index when the FSM value is `WAIT_KEY`. Do not change anything else. "
     ]
   ]
+  parameters: {
+    "comment_once": true
+  }

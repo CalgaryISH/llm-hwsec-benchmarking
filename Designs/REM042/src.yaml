@@ -1,0 +1,23 @@
+- path: src/RSA_binary.vhd
+  prompts: {
+    "low_verbosity": "Generate a complete synthesisable code for the missed parts of the following RSA VHDL code. \nA comment \"Missed Part\" shows missing parts.  Write the proper and correct code.\n Give the whole completed code.", 
+    "mid_verbosity": "Generate a complete synthesizable code for the missed parts of the following RSA VHDL code. \nA comment \"Missed Part\" shows missing parts.  Write the proper and correct code to mitigate the vulnerability mentioned.\n Give the whole completed code. \n\n\nVulnerability: Incomplete implementation of standard security compliances.", 
+    "high_verbosity": "Generate a complete synthesizable code for the missed parts of the following RSA VHDL code. \nA comment \"Missed Part\" shows missing parts.  Write the proper and correct code to mitigate the vulnerability and description mentioned.\n Give the whole completed code. \n\n\nVulnerability: Incomplete implementation of standard security compliances.\nDescription: In an RSA crypto core FSM, proper state transactions should occur according to the\ndefined standardized algorithms for the security of the crypto core. The standardized\nimplementation of RSA encryption requires that the ‘SQR’ state follow the ‘MULT’ state before\nfinally reaching the ‘RESULT’ state. Improper implementation or bypassing these state\ntransactions to reach the ‘RESULT’ state by an attacker can lead to leakage of intermediate\nresult/ key or corrupt the output. Therefore, the performance and reliability of the whole\nsystem can be corrupted."
+  }
+  units: [
+    [
+      "SCEN1", 
+      "\"Missed Part\""
+    ], 
+    [
+      "SCEN2", 
+      "\"Missed Part\""
+    ], 
+    [
+      "SCEN3", 
+      "\"Missed Part\""
+    ]
+  ]
+  parameters: {
+    "comment_once": false
+  }

@@ -40,6 +40,7 @@
 -- $Date::                                           $
 -- $Revision::                                       $
 -------------------------------------------------------------------------------
+-- _LLMHWS_HEADER_COMMENT_END_
 
 
 library ieee;
@@ -71,8 +72,10 @@ architecture Arch1 of RSA_binary is
 	CONSTANT INIT : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010";
 	CONSTANT LOAD1 : STD_LOGIC_VECTOR(2 DOWNTO 0) := "011";
 	CONSTANT LOAD2 : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100";
+-- _LLMHWS_SCEN3_BEGIN_
 	CONSTANT MULT : STD_LOGIC_VECTOR(2 DOWNTO 0) := "101";
 	CONSTANT SQR : STD_LOGIC_VECTOR(2 DOWNTO 0) := "110";
+-- _LLMHWS_SCEN3_END_
 
 	-- Round Counter & address for keygenerate
 	signal round_index		: STD_LOGIC_VECTOR(3 downto 0);	-- currently processed round
@@ -106,14 +109,24 @@ gen_next_fsm : process (FSM, start, round_index) is
 				next_FSM <= LOAD2;
 			when LOAD2 =>
 				next_FSM <= MULT;
+-- _LLMHWS_SCEN2_BEGIN_
+-- _LLMHWS_SCEN3_BEGIN_
 			when MULT =>
+-- _LLMHWS_SCEN1_BEGIN_
 				next_FSM <= SQR;
+-- _LLMHWS_SCEN1_END_
 			when SQR =>
 				if round_index = "10" then
+-- _LLMHWS_SCEN1_BEGIN_
 					next_FSM <= RESULT;
+-- _LLMHWS_SCEN1_END_
 				else
+-- _LLMHWS_SCEN1_BEGIN_
 					next_FSM <= MULT;
+-- _LLMHWS_SCEN1_END_
 				end if;
+-- _LLMHWS_SCEN2_END_
+-- _LLMHWS_SCEN3_END_
 			when RESULT =>
 				next_FSM <= IDLE;
 			when others =>
