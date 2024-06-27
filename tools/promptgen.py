@@ -58,12 +58,20 @@ def check_design_folder(path:str) -> bool:
     return out
 
 if __name__ == "__main__":
-    if len(argv) != 4:
-        print("Usage: python " + argv[0] + " <src.yaml-path> <llm-name> <output-path>")
+    if len(argv) < 3:
+        print("Usage: python " + argv[0] + " <src.yaml-path> <output-path> [parameters]")
+        print("Valid parameters: ")
+        print("    LLM=<llm=name>   Mention the LLM by name (might help increase compliance)")
         exit(1)
     yamlpath = argv[1]
-    llmname = argv[2]
-    outroot = argv[3]
+    outroot = argv[2]
+    llmname = None
+    for param in argv[3:]:
+        parname, parval = param.split("=")
+        if parname == "LLM":
+            llmname = parval
+        else:
+            raise "Uknown parameter `{}`".format(parname)
 
     with open(yamlpath, "r") as srcin:
         metadata = yaml.safe_load(srcin)
@@ -82,6 +90,7 @@ if __name__ == "__main__":
         path = record["path"]
         units = record["units"]
         promptdict = record["prompts"]
+        comment_once = record["parameters"]["comment_once"]
         sourcepath = os.path.join(srcroot, path)
         pre_ext, extension = os.path.splitext(sourcepath)
         namegen = name_generator(extension[1:])
@@ -90,7 +99,10 @@ if __name__ == "__main__":
             prompt_header = promptdict[verbosity]
             for unit_info in units:
                 unit = unit_info[0]
-                prompt_inline = unit_info[1]
+                prompt_inline = ""
+                if llmname:
+                    prompt_inline += f"Instructions for {llmname}: "
+                prompt_inline += f"{unit_info[1]}\r\n"
 
                 # Make the base directory
                 localoutroot = os.path.join(outroot, unit + "_" + verbosity)
@@ -102,6 +114,7 @@ if __name__ == "__main__":
                 shutil.copy(os.path.join(srcroot, "prove.tcl"), localoutroot)
                 shutil.copytree(os.path.join(srcroot, "properties"), os.path.join(localoutroot, "properties"))
                 shutil.copytree(os.path.join(srcroot, "src"), os.path.join(localoutroot, "src"))
+                lines = 0
 
                 outpath = os.path.join(outroot, "prompt_" + verbosity + "_" + pre_ext.split(os.path.sep)[-1] + "_" + unit + extension)
                 fout = open(outpath, "w")
@@ -122,19 +135,27 @@ if __name__ == "__main__":
                             # Wait for the unit to end
                             if _line == unit_end_line:
                                 state = "normal"
+                            else:
+                                if is_annotation.match(line) == None:
+                                    if not comment_once:
+                                        # If not common_once, for every omitted line the instruction is printed. 
+                                        fout.write(commentgen.comment(prompt_inline))
+                                    lines += 1
                         else:
                             # Keep the lines. Meanwhile, wait for the unit to begin
                             if _line == unit_begin_line:
                                 # Insert the LLM instruction in lieu of the first line of the unit
-                                fout.write(commentgen.comment(f"Instructions for {llmname}: {prompt_inline}\r\n"))
+                                if comment_once:
+                                    # If comment_once is true, this is the only time the instruction line is printed. 
+                                    fout.write(commentgen.comment(prompt_inline))
                                 state = "unit"
                             else:
                                 # Only print the lines that are not LLMHWS-related annotations
                                 if is_annotation.match(line) == None:
                                     fout.write(line)
                 fout.close()
-                outpaths.append(outpath)
+                outpaths.append((outpath, lines))
     
     print(f"Generated {len(outpaths)} output folders in {outroot}. List: ")
-    for path in outpaths:
-        print(os.path.abspath(path))
+    for path, lines in outpaths:
+        print(os.path.abspath(path) + ": removed " + str(lines) + " lines")
